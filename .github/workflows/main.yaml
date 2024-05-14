@@ -31,8 +31,9 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
-    
-    - uses: dorny/paths-filter@v3
+
+    - name: Paths-filter
+      uses: dorny/paths-filter@v3
       id: filter
       with:
         filters: |
@@ -45,19 +46,19 @@ jobs:
       if: steps.filter.outputs.backend == 'true'
       run: |
         echo "NAMESPACE_PREFIX=service" >> $GITHUB_ENV
-        echo "APP_NAME=service-sale-payment" >> $GITHUB_ENV
+        echo "APP_NAME=mychannel-service-sale-payment" >> $GITHUB_ENV
 
     - name: set env for frontend path was changed
       if: steps.filter.outputs.frontend == 'true'
       run: |
         echo "NAMESPACE_PREFIX=client" >> $GITHUB_ENV
-        echo "APP_NAME=client-sale-payment" >> $GITHUB_ENV
+        echo "APP_NAME=mychannel-client-sale-payment" >> $GITHUB_ENV
         
     - name: set env for workflow_dispatch
       if: ${{ github.event_name == 'workflow_dispatch' }}
       run: |
         echo "NAMESPACE_PREFIX=${{ github.event.inputs.repo }}" >> $GITHUB_ENV
-        echo "APP_NAME=${{ github.event.inputs.repo }}-sale-payment" >> $GITHUB_ENV
+        echo "APP_NAME=mychannel-${{ github.event.inputs.repo }}-sale-payment" >> $GITHUB_ENV
 
     - name: verify env.
       run: |
