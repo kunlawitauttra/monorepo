@@ -16,7 +16,7 @@ on:
       - "test/backend/**"
       - "test/frontend/**"
       
-run-name: Deploy ${{ inputs.repo }} to DEV by @${{ github.actor }}
+run-name: Deploy ${{ inputs.repo || env.NAMESPACE_PREFIX }} to DEV by @${{ github.actor }}
 
 env:
   NAMESPACE_PREFIX: ${{ github.event.inputs.repo }}
