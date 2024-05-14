@@ -19,13 +19,14 @@ on:
 run-name: Deploy ${{ inputs.repo}} to DEV by @${{ github.actor }}
 
 env:
-  # NAMESPACE_PREFIX: ${{ github.event.inputs.repo }}
-  # APP_NAME: mychannel-${{ github.event.inputs.repo }}-sale-payment
+  NAMESPACE_PREFIX: ${{ github.event.inputs.repo }}
+  APP_NAME: mychannel-${{ github.event.inputs.repo }}-sale-payment
   OWNER_NAME: corp-ais
   IMAGE_TAG: 0.0.1-SNAPSHOT
   
 jobs:
-  Build:
+  path-change-filter:
+    name: Set env for paths changes filter
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -40,28 +41,37 @@ jobs:
           frontend:
             - "packages/frontend/**"
             
-    - name: backend path was changed
+    - name: set env for backend path was changed
       if: steps.filter.outputs.backend == 'true'
       run: |
         echo "NAMESPACE_PREFIX=service" >> $GITHUB_ENV
         echo "APP_NAME=service-sale-payment" >> $GITHUB_ENV
 
-    - name: frontend path was changed
+    - name: set env for frontend path was changed
       if: steps.filter.outputs.frontend == 'true'
       run: |
         echo "NAMESPACE_PREFIX=client" >> $GITHUB_ENV
         echo "APP_NAME=client-sale-payment" >> $GITHUB_ENV
         
-    - name: Set GITHUB_ENV
+    - name: set env for workflow_dispatch
       if: ${{ github.event_name == 'workflow_dispatch' }}
       run: |
         echo "NAMESPACE_PREFIX=${{ github.event.inputs.repo }}" >> $GITHUB_ENV
         echo "APP_NAME=${{ github.event.inputs.repo }}-sale-payment" >> $GITHUB_ENV
 
-    - name: Verify env.
+    # - name: verify env.
+    #   run: |
+    #       echo "NAMESPACE_PREFIX is $NAMESPACE_PREFIX"
+    #       echo "APP_NAME is $APP_NAME"
+
+  verify_env:
+    name: Se env for paths changes filter
+    runs-on: ubuntu-latest
+    steps:
+    - name: verify env.
       run: |
           echo "NAMESPACE_PREFIX is $NAMESPACE_PREFIX"
           echo "APP_NAME is $APP_NAME"
-          
-    name: Deploy "$NAMESPACE_PREFIX" to DEV by @${{ github.actor }}
+
+
 
