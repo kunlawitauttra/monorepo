@@ -15,11 +15,11 @@ on:
     paths:
       - "test/backend/**"
       - "test/frontend/**"
-      
-run-name: Deploy ${{env.NAMESPACE_PREFIX}} to DEV by @${{ github.actor }}
 
 env:
   NAMESPACE_PREFIX: ${{ github.event.inputs.repo }}
+
+run-name: Deploy ${{env.NAMESPACE_PREFIX}} to DEV by @${{ github.actor }}
   
 jobs:
   tests:
