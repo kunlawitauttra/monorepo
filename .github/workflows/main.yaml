@@ -26,7 +26,7 @@ env:
   
 jobs:
   build:
-    name: Build
+    #name: Build
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -64,7 +64,8 @@ jobs:
           echo "NAMESPACE_PREFIX is $NAMESPACE_PREFIX"
           echo "APP_NAME is $APP_NAME"
           
-run-name: Deploy ${{ env.NAMESPACE_PREFIX}} to DEV by @${{ github.actor }}
+#run-name: Deploy ${{ env.NAMESPACE_PREFIX}} to DEV by @${{ github.actor }}
+    name: Deploy ${{ env.NAMESPACE_PREFIX }} to DEV by @${{ github.actor }}
 
 
 
