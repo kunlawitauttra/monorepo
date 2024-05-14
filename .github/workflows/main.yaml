@@ -16,7 +16,7 @@ on:
       - "packages/backend/**"
       - "packages/frontend/**"
       
-run-name: Deploy ${{ inputs.repo}} to DEV by @${{ github.actor }}
+#run-name: Deploy ${{ inputs.repo}} to DEV by @${{ github.actor }}
 
 env:
   NAMESPACE_PREFIX: ${{ github.event.inputs.repo }}
@@ -63,6 +63,8 @@ jobs:
       run: |
           echo "NAMESPACE_PREFIX is $NAMESPACE_PREFIX"
           echo "APP_NAME is $APP_NAME"
+          
+run-name: Deploy
 
 
 
