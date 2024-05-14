@@ -20,6 +20,9 @@ run-name: Deploy ${{ inputs.repo}} to DEV by @${{ github.actor }}
 
 env:
   NAMESPACE_PREFIX: ${{ github.event.inputs.repo }}
+  APP_NAME: mychannel-${{ github.event.inputs.repo }}-sale-payment
+  OWNER_NAME: corp-ais
+  IMAGE_TAG: 0.0.1-SNAPSHOT
   
 jobs:
   tests:
@@ -36,17 +39,24 @@ jobs:
           frontend:
             - "test/frontend/**"
             
-    - name: backend path were changed
+    - name: backend path was changed
       if: steps.filter.outputs.backend == 'true'
       run: |
         echo "NAMESPACE_PREFIX=service" >> $GITHUB_ENV
         echo "APP_NAME=service-sale-payment" >> $GITHUB_ENV
 
-    - name: frontend path were changed
+    - name: frontend path was changed
       if: steps.filter.outputs.frontend == 'true'
       run: |
         echo "NAMESPACE_PREFIX=client" >> $GITHUB_ENV
         echo "APP_NAME=client-sale-payment" >> $GITHUB_ENV
+        
+    - name: Set GITHUB_ENV
+      if: ${{ github.event_name == 'workflow_dispatch' }}
+      run: |
+        echo "NAMESPACE_PREFIX=${{ github.event.inputs.repo }}" >> $GITHUB_ENV
+        echo "APP_NAME=${{ github.event.inputs.repo }}client-sale-payment" >> $GITHUB_ENV
+
 
     - name: Verify env.
       run: |
