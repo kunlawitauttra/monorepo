@@ -16,33 +16,12 @@ on:
       - "test/backend/**"
       - "test/frontend/**"
 
-env:
-  NAMESPACE_PREFIX: ${{ github.event.inputs.repo }}
-
-run-name: Deploy ${{env.NAMESPACE_PREFIX}} to DEV by @${{ github.actor }}
-  
 jobs:
-  tests:
+  deploy:
     runs-on: ubuntu-latest
+    env:
+      NAMESPACE_PREFIX: ${{ github.event.inputs.repo }}
     steps:
-    - uses: actions/checkout@v4
-    - uses: dorny/paths-filter@v3
-      id: filter
-      with:
-        filters: |
-          backend:
-            - "test/backend/**"
-          frontend:
-            - "test/frontend/**"
-
-    # run only if 'backend' files were changed
-    - name: backend test
-      if: steps.filter.outputs.backend == 'true'
-      run: ...
-
-    # run only if 'frontend' files were changed
-    - name: frontend test
-      if: steps.filter.outputs.frontend == 'true'
-      run: ...
-
-
+      - name: Set up job environment
+        run: echo "Setting up environment"
+    run-name: Deploy ${{ env.NAMESPACE_PREFIX }} to DEV by @${{ github.actor }}
