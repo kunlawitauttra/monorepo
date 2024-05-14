@@ -26,6 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+    
     - uses: dorny/paths-filter@v3
       id: filter
       with:
@@ -34,20 +35,19 @@ jobs:
             - "test/backend/**"
           frontend:
             - "test/frontend/**"
-    - name: backend path was changed
+            
+    - name: backend path were changed
       run: |
-          if: steps.filter.outputs.backend == 'true'
-            run: echo "NAMESPACE_PREFIX=service" >> $GITHUB_ENV
-            run: echo "APP_NAME=service-sale-payment" >> $GITHUB_ENV
+      if: steps.filter.outputs.backend == 'true'
+      run: echo "NAMESPACE_PREFIX=service" >> $GITHUB_ENV
+      run: echo "APP_NAME=service-sale-payment" >> $GITHUB_ENV
 
-    - name: backend path was changed
-      run: |
-          if: steps.filter.outputs.backend == 'true'
-            run: echo "NAMESPACE_PREFIX=client" >> $GITHUB_ENV
-            run: echo "APP_NAME=client-sale-payment" >> $GITHUB_ENV
+    - name: backend path were changed
+      if: steps.filter.outputs.frontend == 'true'
+      run: echo "NAMESPACE_PREFIX=client" >> $GITHUB_ENV
+      run: echo "APP_NAME=client-sale-payment" >> $GITHUB_ENV
 
     - name: Verify env.NAMESPACE_PREFIX
-      run: |
-          run: echo "NAMESPACE_PREFIX is $NAMESPACE_PREFIX"
-          run: echo "NAMESPACE_PREFIX is $APP_NAME"
+      run: echo "NAMESPACE_PREFIX is $NAMESPACE_PREFIX"
+      run: echo "NAMESPACE_PREFIX is $APP_NAME"
 
