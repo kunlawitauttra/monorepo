@@ -1,4 +1,4 @@
-name: test-monorepo
+name: DEV - Build 
 on:
   workflow_dispatch:
     inputs:
@@ -13,31 +13,33 @@ on:
     branches:
       - main
     paths:
-      - "test/backend/**"
-      - "test/frontend/**"
+      - "packages/backend/**"
+      - "packages/frontend/**"
       
 run-name: Deploy ${{ inputs.repo}} to DEV by @${{ github.actor }}
 
 env:
-  NAMESPACE_PREFIX: ${{ github.event.inputs.repo }}
-  APP_NAME: mychannel-${{ github.event.inputs.repo }}-sale-payment
+  # NAMESPACE_PREFIX: ${{ github.event.inputs.repo }}
+  # APP_NAME: mychannel-${{ github.event.inputs.repo }}-sale-payment
   OWNER_NAME: corp-ais
   IMAGE_TAG: 0.0.1-SNAPSHOT
   
 jobs:
-  tests:
+  Build:
+    name: Deploy "$NAMESPACE_PREFIX" to DEV by @${{ github.actor }}
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout
+      uses: actions/checkout@v3
     
     - uses: dorny/paths-filter@v3
       id: filter
       with:
         filters: |
           backend:
-            - "test/backend/**"
+            - "packages/backend/**"
           frontend:
-            - "test/frontend/**"
+            - "packages/frontend/**"
             
     - name: backend path was changed
       if: steps.filter.outputs.backend == 'true'
@@ -56,7 +58,6 @@ jobs:
       run: |
         echo "NAMESPACE_PREFIX=${{ github.event.inputs.repo }}" >> $GITHUB_ENV
         echo "APP_NAME=${{ github.event.inputs.repo }}-sale-payment" >> $GITHUB_ENV
-
 
     - name: Verify env.
       run: |
