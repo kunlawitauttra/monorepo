@@ -34,14 +34,20 @@ jobs:
             - "test/backend/**"
           frontend:
             - "test/frontend/**"
-    # run only if 'backend' files were changed
-    - name: backend test
-      if: steps.filter.outputs.backend == 'true'
-      run: echo "NAMESPACE_PREFIX=service" >> $GITHUB_ENV
-    # run only if 'frontend' files were changed
-    - name: frontend test
-      if: steps.filter.outputs.frontend == 'true'
-      run: echo "NAMESPACE_PREFIX=client" >> $GITHUB_ENV
-    - name: Verify NAMESPACE_PREFIX
-      run: echo "NAMESPACE_PREFIX is $NAMESPACE_PREFIX"
+    - name: backend path was changed
+      run: |
+          if: steps.filter.outputs.backend == 'true'
+            run: echo "NAMESPACE_PREFIX=service" >> $GITHUB_ENV
+            run: echo "APP_NAME=service-sale-payment" >> $GITHUB_ENV
+
+    - name: backend path was changed
+      run: |
+          if: steps.filter.outputs.backend == 'true'
+            run: echo "NAMESPACE_PREFIX=client" >> $GITHUB_ENV
+            run: echo "APP_NAME=client-sale-payment" >> $GITHUB_ENV
+
+    - name: Verify env.NAMESPACE_PREFIX
+      run: |
+          run: echo "NAMESPACE_PREFIX is $NAMESPACE_PREFIX"
+          run: echo "NAMESPACE_PREFIX is $APP_NAME"
 
