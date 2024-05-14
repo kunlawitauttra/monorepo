@@ -55,7 +55,7 @@ jobs:
       if: ${{ github.event_name == 'workflow_dispatch' }}
       run: |
         echo "NAMESPACE_PREFIX=${{ github.event.inputs.repo }}" >> $GITHUB_ENV
-        echo "APP_NAME=${{ github.event.inputs.repo }}client-sale-payment" >> $GITHUB_ENV
+        echo "APP_NAME=${{ github.event.inputs.repo }}-sale-payment" >> $GITHUB_ENV
 
 
     - name: Verify env.
