@@ -26,7 +26,7 @@ env:
   
 jobs:
   Build:
-    name: Deploy "$NAMESPACE_PREFIX" to DEV by @${{ github.actor }}
+    name: Deploy ${{ env.NAMESPACE_PREFIX }} to DEV by @${{ github.actor }}
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
