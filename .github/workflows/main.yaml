@@ -18,10 +18,11 @@ on:
 
 jobs:
   deploy:
+    name: Deploy ${{ github.event.inputs.repo }} to DEV by @${{ github.actor }}
     runs-on: ubuntu-latest
     env:
       NAMESPACE_PREFIX: ${{ github.event.inputs.repo }}
     steps:
       - name: Set up job environment
         run: echo "Setting up environment"
-    run-name: Deploy ${{ env.NAMESPACE_PREFIX }} to DEV by @${{ github.actor }}
+
