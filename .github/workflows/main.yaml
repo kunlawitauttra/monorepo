@@ -1,3 +1,26 @@
+name: test-monorepo
+on:
+  workflow_dispatch:
+    inputs:
+      repo:
+        description: 'Please select your cluster'
+        required: true
+        type: choice
+        options:
+         - client
+         - service
+  push:
+    branches:
+      - main
+    paths:
+      - "test/backend/**"
+      - "test/frontend/**"
+      
+run-name: Deploy ${{ inputs.repo }} to DEV by @${{ github.actor }}
+
+env:
+  NAMESPACE_PREFIX: ${{ github.event.inputs.repo }}
+  
 jobs:
   tests:
     runs-on: ubuntu-latest
@@ -8,21 +31,18 @@ jobs:
       with:
         filters: |
           backend:
-            - 'backend/**'
+            - "test/backend/**"
           frontend:
-            - 'frontend/**'
+            - "test/frontend/**"
 
     # run only if 'backend' files were changed
-    - name: backend tests
+    - name: backend test
       if: steps.filter.outputs.backend == 'true'
       run: ...
 
     # run only if 'frontend' files were changed
-    - name: frontend tests
+    - name: frontend test
       if: steps.filter.outputs.frontend == 'true'
       run: ...
 
-    # run if 'backend' or 'frontend' files were changed
-    - name: e2e tests
-      if: steps.filter.outputs.backend == 'true' || steps.filter.outputs.frontend == 'true'
-      run: ...
+
