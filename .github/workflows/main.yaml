@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       # Expose matched filters as job 'services' output variable
-      services: ${{ steps.filter.outputs.changes
+      services: ${{ steps.filter.outputs.changes}}
       
     steps:
     - name: Checkout
