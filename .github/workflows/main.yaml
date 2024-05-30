@@ -46,7 +46,7 @@ jobs:
             - "packages/frontend/**"
 
   build:
-    needs: changes
+    # needs: changes
     strategy:
       matrix:
         namespace_prefix: 
