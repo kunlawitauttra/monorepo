@@ -1,4 +1,5 @@
-name: DEV - Build 
+name: DEV - Build
+
 on:
   workflow_dispatch:
     inputs:
@@ -16,11 +17,10 @@ on:
       - "packages/backend/**"
       - "packages/frontend/**"
       
-run-name: Deploy ${{ inputs.namespace_prefix}} to DEV by @${{ github.actor }}
-
 env:
-  # NAMESPACE_PREFIX: ${{ github.event.inputs.namespace_prefix }}
-  # APP_NAME: mychannel-${{ github.event.inputs.namespace_prefix }}-sale-payment
+  RUN_NAME: Deploy ${{ github.event.inputs.namespace_prefix }} to DEV by @${{ github.actor }}
+  NAMESPACE_PREFIX: ${{ github.event.inputs.namespace_prefix }}
+  APP_NAME: mychannel-${{ github.event.inputs.namespace_prefix }}-sale-payment
   OWNER_NAME: corp-ais
   IMAGE_TAG: 0.0.1-SNAPSHOT
   
@@ -28,7 +28,7 @@ jobs:
   changes:
     runs-on: ubuntu-latest
     outputs:
-      namespace_prefix: ${{ steps.filter.outputs.changes }}
+      namespace_prefix: ${{ steps.filter.outputs.namespace_prefix }}
       
     steps:
     - name: Checkout
@@ -48,23 +48,22 @@ jobs:
     needs: changes
     strategy:
       matrix:
-        namespace_prefix: ${{ fromJSON(needs.changes.outputs.namespace_prefix) || fromJSON(inputs.namespace_prefix) }}
-        # region: ${{ (inputs.region && fromJSON(inputs.region)) || fromJSON('["asse", "asea"]')  }}
+        namespace_prefix: ${{fromJson(needs.changes.outputs.namespace_prefix) || [github.event.inputs.namespace_prefix] }}
+
     runs-on: ubuntu-latest
 
     steps:
-    - name: verify namespace_prefix
+    - name: Verify namespace_prefix
       run: |
         echo ${{ matrix.namespace_prefix }}
         echo ${{ inputs.namespace_prefix }}
 
-    - name: set env
+    - name: Set env
       run: |
         echo "NAMESPACE_PREFIX=${{ matrix.namespace_prefix }}" >> $GITHUB_ENV
         echo "APP_NAME=mychannel-${{ matrix.namespace_prefix }}-sale-payment" >> $GITHUB_ENV
 
-    - name: verify env.
+    - name: Verify env
       run: |
-          echo "NAMESPACE_PREFIX is $NAMESPACE_PREFIX"
-          echo "APP_NAME is $APP_NAME"
-
+        echo "NAMESPACE_PREFIX is $NAMESPACE_PREFIX"
+        echo "APP_NAME is $APP_NAME"
