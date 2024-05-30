@@ -26,7 +26,7 @@ env:
   
 jobs:
   build:
-    name: Build
+    name: build
     runs-on: ubuntu-latest
     outputs:
       services: ${{ steps.filter.outputs.changes }}
@@ -44,29 +44,45 @@ jobs:
             - "packages/backend/**"
           frontend:
             - "packages/frontend/**"
-            
+
+  matrix:
+    needs: build
+    strategy:
+      matrix:
+        # Parse JSON array containing names of all filters matching any of changed files
+        # e.g. ['package1', 'package2'] if both package folders contains changes
+        repo: ${{ fromJSON(needs.build.outputs.services) }}
+    runs-on: ubuntu-latest
+
+    steps:
     - name: set env for backend path was changed
-      if: steps.filter.outputs.backend == 'true'
       run: |
-        echo "NAMESPACE_PREFIX=service" >> $GITHUB_ENV
-        echo "APP_NAME=mychannel-service-sale-payment" >> $GITHUB_ENV
+        echo ${{ matrix.repo }}
 
-    - name: set env for frontend path was changed
-      if: steps.filter.outputs.frontend == 'true'
-      run: |
-        echo "NAMESPACE_PREFIX=client" >> $GITHUB_ENV
-        echo "APP_NAME=mychannel-client-sale-payment" >> $GITHUB_ENV
+    
+    # steps:
+    # - name: set env for backend path was changed
+    #   if: steps.filter.outputs.backend == 'true'
+    #   run: |
+    #     echo "NAMESPACE_PREFIX=service" >> $GITHUB_ENV
+    #     echo "APP_NAME=mychannel-service-sale-payment" >> $GITHUB_ENV
+
+    # - name: set env for frontend path was changed
+    #   if: steps.filter.outputs.frontend == 'true'
+    #   run: |
+    #     echo "NAMESPACE_PREFIX=client" >> $GITHUB_ENV
+    #     echo "APP_NAME=mychannel-client-sale-payment" >> $GITHUB_ENV
         
-    - name: set env for workflow_dispatch
-      if: ${{ github.event_name == 'workflow_dispatch' }}
-      run: |
-        echo "NAMESPACE_PREFIX=${{ github.event.inputs.repo }}" >> $GITHUB_ENV
-        echo "APP_NAME=mychannel-${{ github.event.inputs.repo }}-sale-payment" >> $GITHUB_ENV
+    # - name: set env for workflow_dispatch
+    #   if: ${{ github.event_name == 'workflow_dispatch' }}
+    #   run: |
+    #     echo "NAMESPACE_PREFIX=${{ github.event.inputs.repo }}" >> $GITHUB_ENV
+    #     echo "APP_NAME=mychannel-${{ github.event.inputs.repo }}-sale-payment" >> $GITHUB_ENV
 
-    - name: verify env.
-      run: |
-          echo "NAMESPACE_PREFIX is $NAMESPACE_PREFIX"
-          echo "APP_NAME is $APP_NAME"
+    # - name: verify env.
+    #   run: |
+    #       echo "NAMESPACE_PREFIX is $NAMESPACE_PREFIX"
+    #       echo "APP_NAME is $APP_NAME"
 
 
 
