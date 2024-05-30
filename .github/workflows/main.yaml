@@ -48,8 +48,7 @@ jobs:
   build:
     strategy:
       matrix:
-        namespace_prefix: ${{fromJSON(needs.changes.outputs.namespace_prefix) }}
-          # region: ${{ (inputs.region && fromJSON(inputs.region)) || fromJSON('["asse", "asea"]')  }}
+        package: ${{ fromJSON(needs.changes.outputs.packages) }}
     runs-on: ubuntu-latest
 
     steps:
