@@ -2,13 +2,13 @@ name: DEV - Build
 on:
   workflow_dispatch:
     inputs:
-      repo:
-        description: 'Please select your repo'
-        required: true
+      namespace_prefix:
         type: choice
+        description: Namespace Prefix to Deploy
+        required: true
         options:
-         - client
-         - service
+          - client
+          - service
   push:
     branches:
       - main
@@ -16,11 +16,11 @@ on:
       - "packages/backend/**"
       - "packages/frontend/**"
       
-run-name: Deploy ${{ inputs.repo}} to DEV by @${{ github.actor }}
+run-name: Deploy ${{ inputs.namespace_prefix}} to DEV by @${{ github.actor }}
 
 env:
-  NAMESPACE_PREFIX: ${{ github.event.inputs.repo }}
-  APP_NAME: mychannel-${{ github.event.inputs.repo }}-sale-payment
+  NAMESPACE_PREFIX: ${{ github.event.inputs.namespace_prefix }}
+  APP_NAME: mychannel-${{ github.event.inputs.namespace_prefix }}-sale-payment
   OWNER_NAME: corp-ais
   IMAGE_TAG: 0.0.1-SNAPSHOT
   
@@ -29,7 +29,7 @@ jobs:
     name: build
     runs-on: ubuntu-latest
     outputs:
-      services: ${{ steps.filter.outputs.changes }}
+      namespace_prefix: ${{ steps.filter.outputs.changes }}
       
     steps:
     - name: Checkout
@@ -49,7 +49,7 @@ jobs:
     needs: build
     strategy:
       matrix:
-        repo: ${{ fromJSON(needs.build.outputs.services) }}
+        namespace_prefix: ${{ fromJSON(needs.build.outputs.namespace_prefix) }}
     runs-on: ubuntu-latest
 
     steps:
@@ -59,8 +59,8 @@ jobs:
 
     - name: set env
       run: |
-        echo "NAMESPACE_PREFIX=${{ matrix.repo }}" >> $GITHUB_ENV
-        echo "APP_NAME=mychannel-${{ matrix.repo }}-sale-payment" >> $GITHUB_ENV
+        echo "NAMESPACE_PREFIX=${{ matrix.namespace_prefix }}" >> $GITHUB_ENV
+        echo "APP_NAME=mychannel-${{ matrix.namespace_prefix }}-sale-payment" >> $GITHUB_ENV
 
     - name: verify env.
       run: |
