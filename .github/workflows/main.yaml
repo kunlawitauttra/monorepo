@@ -50,7 +50,7 @@ jobs:
       matrix:
         namespace_prefix: 
           - ${{fromJson(needs.changes.outputs.namespace_prefix)}}
-          - ${{fromJson(inputs.namespace_prefix)}}
+          - ${{inputs.namespace_prefix}}
 
     runs-on: ubuntu-latest
 
