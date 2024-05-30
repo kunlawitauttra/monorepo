@@ -3,13 +3,12 @@ on:
   workflow_dispatch:
     inputs:
       namespace_prefix:
-        # type: choice
+        type: choice
         description: Namespace Prefix to Deploy
         required: true
-        default: "['client', 'service']"
-        # options:
-        #   - client
-        #   - service
+        options:
+          - client
+          - service
   push:
     branches:
       - main
