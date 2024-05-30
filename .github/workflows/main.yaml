@@ -19,8 +19,8 @@ on:
 run-name: Deploy ${{ inputs.namespace_prefix}} to DEV by @${{ github.actor }}
 
 env:
-  # NAMESPACE_PREFIX: ${{ github.event.inputs.namespace_prefix }}
-  # APP_NAME: mychannel-${{ github.event.inputs.namespace_prefix }}-sale-payment
+  NAMESPACE_PREFIX: ${{ github.event.inputs.namespace_prefix }}
+  APP_NAME: mychannel-${{ github.event.inputs.namespace_prefix }}-sale-payment
   OWNER_NAME: corp-ais
   IMAGE_TAG: 0.0.1-SNAPSHOT
   
