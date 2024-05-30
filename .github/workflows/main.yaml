@@ -26,7 +26,6 @@ env:
   
 jobs:
   changes:
-    name: changes detect and filter
     runs-on: ubuntu-latest
     outputs:
       namespace_prefix: ${{ steps.filter.outputs.changes }}
@@ -46,7 +45,6 @@ jobs:
             - "packages/frontend/**"
 
   build:
-    name: build
     needs: changes
     strategy:
       matrix:
@@ -54,10 +52,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: set env for backend path was changed
-      run: |
-        echo ${{ matrix.repo }}
-
     - name: set env
       run: |
         echo "NAMESPACE_PREFIX=${{ matrix.namespace_prefix }}" >> $GITHUB_ENV
@@ -67,9 +61,4 @@ jobs:
       run: |
           echo "NAMESPACE_PREFIX is $NAMESPACE_PREFIX"
           echo "APP_NAME is $APP_NAME"
-
-
-
-
-
 
