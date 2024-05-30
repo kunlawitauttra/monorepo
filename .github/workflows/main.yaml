@@ -47,7 +47,7 @@ jobs:
   build_push:
     needs: changes
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
+    # if: github.event_name == 'push'
     strategy:
       matrix:
         namespace_prefix: ${{ fromJson(needs.changes.outputs.namespace_prefix) }}
