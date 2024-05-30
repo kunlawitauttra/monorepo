@@ -55,11 +55,13 @@ jobs:
     steps:
     - name: verify namespace_prefix
       run: |
+        if: github.event_name == 'push'
         echo ${{ matrix.namespace_prefix }}
         echo ${{ inputs.namespace_prefix }}
 
     - name: set env
       run: |
+       if: github.event_name == 'push'
         echo "NAMESPACE_PREFIX=${{ matrix.namespace_prefix }}" >> $GITHUB_ENV
         echo "APP_NAME=mychannel-${{ matrix.namespace_prefix }}-sale-payment" >> $GITHUB_ENV
 
