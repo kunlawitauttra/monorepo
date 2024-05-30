@@ -53,7 +53,7 @@ jobs:
         # namespace_prefix: ${{ fromJson(needs.changes.outputs.namespace_prefix) }}
         namespace_prefix:
         - if: github.event_name == 'push'
-          then: ${{ fromJSON(needs.changes.outputs.namespace_prefixinputs.namespace_prefix) }}
+          then: ${{ fromJSON(needs.changes.outputs.namespace_prefix) }}
         - if: github.event_name == 'workflow_dispatch'
           then: ${{ fromJSON(inputs.namespace_prefix) }}
 
