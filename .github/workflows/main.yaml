@@ -3,12 +3,13 @@ on:
   workflow_dispatch:
     inputs:
       namespace_prefix:
-        type: choice
+        # type: choice
         description: Namespace Prefix to Deploy
         required: true
-        options:
-          - client
-          - service
+        default: "['client']"
+        # options:
+        #   - client
+        #   - service
   push:
     branches:
       - main
@@ -49,7 +50,7 @@ jobs:
     needs: changes
     strategy:
       matrix:
-        namespace_prefix: ${{ inputs.namespace_prefix || fromJSON(needs.changes.outputs.namespace_prefix) }}
+        namespace_prefix: ${{ fromJSON(inputs.namespace_prefix) || fromJSON(needs.changes.outputs.namespace_prefix) }}
         # region: ${{ (inputs.region && fromJSON(inputs.region)) || fromJSON('["asse", "asea"]')  }}
     runs-on: ubuntu-latest
 
