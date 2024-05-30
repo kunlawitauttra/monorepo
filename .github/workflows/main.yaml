@@ -1,3 +1,71 @@
+# name: DEV - Build
+
+# on:
+#   workflow_dispatch:
+#     inputs:
+#       namespace_prefix:
+#         type: choice
+#         description: Namespace Prefix to Deploy
+#         required: true
+#         options:
+#           - client
+#           - service
+#   push:
+#     branches:
+#       - main
+#     paths:
+#       - "packages/backend/**"
+#       - "packages/frontend/**"
+      
+# run-name: Deploy ${{ inputs.namespace_prefix }} to DEV by @${{ github.actor }}
+# env:
+#   # NAMESPACE_PREFIX: ${{ github.event.inputs.namespace_prefix }}
+#   # APP_NAME: mychannel-${{ github.event.inputs.namespace_prefix }}-sale-payment
+#   OWNER_NAME: corp-ais
+#   IMAGE_TAG: 0.0.1-SNAPSHOT
+  
+# jobs:
+#   changes:
+#     if: github.event_name == 'push'
+#     runs-on: ubuntu-latest
+#     outputs:
+#       namespace_prefix: ${{ steps.filter.outputs.changes}}
+      
+#     steps:
+#     - name: Checkout
+#       uses: actions/checkout@v3
+
+#     - name: Paths-filter
+#       uses: dorny/paths-filter@v3
+#       id: filter
+#       with:
+#         filters: |
+#           service:
+#             - "packages/backend/**"
+#           client:
+#             - "packages/frontend/**"
+
+#   build:
+#     strategy:
+#       matrix:
+#         namespace_prefix: ${{ fromJSON(needs.changes.outputs.namespace_prefix) }}
+#     runs-on: ubuntu-latest
+
+#     steps:
+#     - name: Verify namespace_prefix
+#       run: |
+#         echo ${{ matrix.namespace_prefix }}
+
+#     - name: Set env
+#       run: |
+#         echo "NAMESPACE_PREFIX=${{ matrix.namespace_prefix }}" >> $GITHUB_ENV
+#         echo "APP_NAME=mychannel-${{ matrix.namespace_prefix }}-sale-payment" >> $GITHUB_ENV
+
+#     - name: Verify env
+#       run: |
+#         echo "NAMESPACE_PREFIX is $NAMESPACE_PREFIX"
+#         echo "APP_NAME is $APP_NAME"
+
 name: DEV - Build
 
 on:
