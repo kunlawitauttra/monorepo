@@ -47,15 +47,9 @@ jobs:
   build_push:
     needs: changes
     runs-on: ubuntu-latest
-    # if: github.event_name == 'push'
     strategy:
       matrix:
-        # namespace_prefix: ${{ fromJson(needs.changes.outputs.namespace_prefix) }}
-        namespace_prefix:
-        - if: github.event_name == 'push'
-          then: ${{ fromJSON(needs.changes.outputs.namespace_prefix) }}
-        - if: github.event_name == 'workflow_dispatch'
-          then: ${{ inputs.namespace_prefix }}
+        namespace_prefix: ${{ fromJson(needs.changes.outputs.namespace_prefix) }}
 
     steps:
     - name: verify namespace_prefix
