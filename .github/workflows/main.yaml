@@ -19,8 +19,8 @@ on:
 run-name: Deploy ${{ inputs.namespace_prefix}} to DEV by @${{ github.actor }}
 
 env:
-  NAMESPACE_PREFIX: ${{ github.event.inputs.namespace_prefix }}
-  APP_NAME: mychannel-${{ github.event.inputs.namespace_prefix }}-sale-payment
+  # NAMESPACE_PREFIX: ${{ github.event.inputs.namespace_prefix }}
+  # APP_NAME: mychannel-${{ github.event.inputs.namespace_prefix }}-sale-payment
   OWNER_NAME: corp-ais
   IMAGE_TAG: 0.0.1-SNAPSHOT
   
@@ -48,7 +48,8 @@ jobs:
     needs: changes
     strategy:
       matrix:
-        namespace_prefix: ${{ fromJSON(needs.changes.outputs.namespace_prefix) }}
+        namespace_prefix: ${{ fromJSON(needs.changes.outputs.namespace_prefix) || fromJSON(input.namespace_prefix) }} 
+        # region: ${{ (inputs.region && fromJSON(inputs.region)) || fromJSON('["asse", "asea"]')  }}
     runs-on: ubuntu-latest
 
     steps:
