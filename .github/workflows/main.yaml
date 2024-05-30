@@ -48,7 +48,7 @@ jobs:
   build:
     strategy:
       matrix:
-        package: ${{ fromJSON(needs.changes.outputs.namespace_prefix) }}
+        namespace_prefix: ${{ fromJSON(needs.changes.outputs.namespace_prefix) }}
     runs-on: ubuntu-latest
 
     steps:
