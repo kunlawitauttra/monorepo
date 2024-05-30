@@ -64,14 +64,6 @@ jobs:
       matrix:
         namespace_prefix: ${{ fromJson(needs.changes.outputs.namespace_prefix) }}
 
-  build_dispatch:
-    needs: changes
-    runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch'
-    strategy:
-      matrix:
-        namespace_prefix: ${{ fromJson(github.event.inputs.namespace_prefix) }}
-
     steps:
     - name: verify namespace_prefix
       run: |
