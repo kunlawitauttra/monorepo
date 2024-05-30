@@ -46,15 +46,30 @@ jobs:
           client:
             - "packages/frontend/**"
 
-  build:
+  # build:
+  #   needs: changes
+  #   strategy:
+  #     matrix:
+  #       namespace_prefix: ${{ fromJson(needs.changes.outputs.namespace_prefix) }}
+  #       # namespace_prefix: ${{ fromJSON(inputs.namespace_prefix) || fromJSON(needs.changes.outputs.namespace_prefix) }}
+  #       # region: ${{ (inputs.region && fromJSON(inputs.region)) || fromJSON('["asse", "asea"]')  }}
+  #       # region: ${{ github.event.client_payload.inputs.region || (inputs.region && fromJSON(inputs.region)) || fromJSON('["asse", "asea"]')  }}
+
+
+  build_push:
     needs: changes
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
     strategy:
       matrix:
-        namespace_prefix: ${{ fromJson(needs.changes.outputs.namespace_prefix) || (inputs.namespace_prefix && fromJSON(inputs.namespace_prefix) || fromJSON('["client", "service"]') }}
-        # namespace_prefix: ${{ fromJSON(inputs.namespace_prefix) || fromJSON(needs.changes.outputs.namespace_prefix) }}
-        # region: ${{ (inputs.region && fromJSON(inputs.region)) || fromJSON('["asse", "asea"]')  }}
-        # region: ${{ github.event.client_payload.inputs.region || (inputs.region && fromJSON(inputs.region)) || fromJSON('["asse", "asea"]')  }}
+        namespace_prefix: ${{ fromJson(needs.changes.outputs.namespace_prefix) }}
+        
+  build_dispatch:
     runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+    strategy:
+      matrix:
+        namespace_prefix: ${{ fromJson(github.event.inputs.namespace_prefix) }}
 
     steps:
     - name: check outputs
