@@ -6,7 +6,7 @@ on:
         # type: choice
         description: Namespace Prefix to Deploy
         required: true
-        default: "['asse', 'asea']"
+        default: "['client', 'service']"
         # options:
         #   - client
         #   - service
