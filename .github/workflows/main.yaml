@@ -49,7 +49,8 @@ jobs:
     strategy:
       matrix:
         namespace_prefix: 
-          - ${{ inputs.namespace_prefix || fromJson(needs.changes.outputs.namespace_prefix)}}
+          - ${{ (inputs.namespace_prefix && fromJSON(inputs.namespace_prefix)) || fromJson(needs.changes.outputs.namespace_prefix) }}
+          # region: ${{ (inputs.region && fromJSON(inputs.region)) || fromJSON('["asse", "asea"]')  }}
     runs-on: ubuntu-latest
 
     steps:
