@@ -26,6 +26,7 @@ env:
   
 jobs:
   changes:
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     outputs:
       namespace_prefix: ${{ steps.filter.outputs.changes }}
@@ -46,7 +47,6 @@ jobs:
 
   build:
     needs: changes
-    if: github.event_name == 'push'
     strategy:
       matrix:
         namespace_prefix: ${{ fromJSON(needs.changes.outputs.namespace_prefix) || fromJSON(inputs.namespace_prefix) }}
