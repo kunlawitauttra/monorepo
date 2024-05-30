@@ -53,6 +53,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: verify namespace_prefix
+      run: |
+        echo ${{ matrix.namespace_prefix }}
+        echo ${{ inputs.namespace_prefix }}
+
     - name: set env
       run: |
         echo "NAMESPACE_PREFIX=${{ matrix.namespace_prefix }}" >> $GITHUB_ENV
