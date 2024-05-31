@@ -46,7 +46,7 @@ jobs:
             - "packages/frontend/**"
 
   build_push:
-    needs: changes
+    # needs: changes
     runs-on: ubuntu-latest
     # if: ${{ needs.changes.outputs.namespace_prefix != '' }}
     strategy:
