@@ -47,7 +47,7 @@ jobs:
   build_push:
     # needs: changes
     runs-on: ubuntu-latest
-    if: ${{ needs.changes.outputs.namespace_prefix != '[]' }}
+    if: ${{ needs.changes.outputs.namespace_prefix != '' }}
     strategy:
       fail-fast: false
       matrix:
