@@ -48,6 +48,7 @@ jobs:
     needs: changes
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         namespace_prefix: ${{ fromJson(needs.changes.outputs.namespace_prefix) }}
 
