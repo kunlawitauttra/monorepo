@@ -26,6 +26,7 @@ env:
   
 jobs:
   changes:
+    if: ${{ github.event_name == 'push' }}
     runs-on: ubuntu-latest
     outputs:
       namespace_prefix: ${{ steps.filter.outputs.changes }}
