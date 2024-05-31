@@ -45,12 +45,13 @@ jobs:
             - "packages/frontend/**"
 
   build_push:
-    needs: changes
+    # needs: changes
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         namespace_prefix: ${{ fromJson(needs.changes.outputs.namespace_prefix) }}
+        # region: ${{ github.event.client_payload.inputs.region || (inputs.region && fromJSON(inputs.region)) || fromJSON('["asse", "asea"]')  }}
 
     steps:
     - name: verify namespace_prefix
