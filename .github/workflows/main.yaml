@@ -52,7 +52,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        namespace_prefix: ${{ fromJson(needs.changes.outputs.namespace_prefix) }}
+        namespace_prefix: ${{ fromJson(needs.changes.outputs.namespace_prefix) && fromJSON(inputs.namespace_prefix)) }}
         # region: ${{ github.event.client_payload.inputs.region || (inputs.region && fromJSON(inputs.region)) || fromJSON('["asse", "asea"]')  }}
     continue-on-error: true
 
